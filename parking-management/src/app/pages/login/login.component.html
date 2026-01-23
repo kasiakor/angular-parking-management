@@ -1,0 +1,73 @@
+<div
+  class="login-page d-flex align-items-center justify-content-center min-vh-100"
+>
+  <div class="bg-overlay"></div>
+
+  <div class="card login-card shadow-lg">
+    <!-- Header -->
+    <div class="card-header bg-primary text-white">
+      <div class="d-flex align-items-center gap-3">
+        <div class="brand-icon fw-bold">P</div>
+        <div>
+          <div class="h5 mb-0 fw-bold">ParkSmart</div>
+          <small>Parking Management System</small>
+        </div>
+      </div>
+    </div>
+
+    <!-- Body -->
+    <div class="card-body p-4 overflow-auto">
+      <div class="text-center mb-3">
+        <div class="avatar mx-auto mb-2">
+          <i class="fa-solid fa-user"></i>
+        </div>
+        <h4 class="fw-bold">Operator Login</h4>
+      </div>
+
+      <form id="loginForm">
+        <!-- Username -->
+        <div class="mb-3">
+          <label class="form-label">Username</label>
+          <div class="input-group">
+            <span class="input-group-text">
+              <i class="bi bi-person"></i>
+            </span>
+            <input
+              type="text"
+              class="form-control"
+              placeholder="Enter username"
+              name="emailId"
+              [(ngModel)]="loginObj.emailId"
+            />
+          </div>
+        </div>
+
+        <!-- Password -->
+        <div class="mb-3">
+          <label class="form-label">Password</label>
+          <div class="input-group">
+            <span class="input-group-text">
+              <i class="bi bi-lock"></i>
+            </span>
+            <input
+              type="password"
+              class="form-control"
+              placeholder="Enter password"
+              name="password"
+              [(ngModel)]="loginObj.password"
+            />
+          </div>
+        </div>
+
+        <!-- Button -->
+        <button
+          type="button"
+          (click)="onLogin()"
+          class="btn btn-primary w-100 py-2 fw-semibold"
+        >
+          Login <i class="bi bi-box-arrow-in-right ms-2"></i>
+        </button>
+      </form>
+    </div>
+  </div>
+</div>
