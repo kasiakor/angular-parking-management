@@ -1,0 +1,173 @@
+.dashboard {
+  background: #f6f8fb;
+}
+
+/* Header */
+.dashboard-title {
+  font-size: 2.4rem;
+  font-weight: 800;
+  letter-spacing: -0.6px;
+}
+
+/* Search (Bootstrap flex already used in HTML) */
+.searchbox {
+  max-width: 420px;
+}
+
+.searchbox-input {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.searchbox-btn {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+  width: 52px;
+}
+
+/* Summary cards */
+
+/* Base summary card */
+.summary-card {
+  border-radius: 16px;
+  border: 2px solid transparent; /* default */
+  background: #ffffff;
+}
+
+/* Color-coded borders */
+.summary-total {
+  border-color: #0d6efd; /* Bootstrap primary */
+}
+
+.summary-available {
+  border-color: #198754; /* Bootstrap success */
+}
+
+.summary-occupied {
+  border-color: #dc3545; /* Bootstrap danger */
+}
+
+.summary-rate {
+  border-color: #0dcaf0; /* Bootstrap info */
+}
+
+.summary-value {
+  font-size: 2rem;
+  font-weight: 900;
+}
+
+.summary-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+}
+
+/* Soft background helpers */
+.bg-soft-primary {
+  background: #e8f1ff;
+}
+.bg-soft-success {
+  background: #e9f7f0;
+}
+.bg-soft-danger {
+  background: #fdecee;
+}
+.bg-soft-cyan {
+  background: #e7f7ff;
+}
+
+.text-cyan {
+  color: #0ea5e9;
+}
+
+/* Layout card */
+.layout-card {
+  border-radius: 16px;
+  border: 1px solid #e6edf5;
+}
+
+.layout-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: #f4f7fb;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Legend */
+.legend-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.dot-available {
+  background: #1f7a5f;
+}
+.dot-occupied {
+  background: #e14b54;
+}
+.dot-reserved {
+  background: #f0b429;
+}
+.dot-maintenance {
+  background: #b7c0cf;
+}
+
+/* Spot tile (NO layout responsibility here) */
+.spot-tile {
+  border-radius: 16px;
+  border: 2px solid #1f2937;
+  min-height: 140px;
+  padding: 16px 12px;
+  background: #ffffff;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 6px;
+}
+
+.spot-icon {
+  font-size: 20px;
+  color: #1f2937;
+}
+
+.spot-code {
+  font-size: 26px;
+  font-weight: 900;
+}
+
+.spot-status {
+  font-size: 14px;
+  font-weight: 800;
+}
+
+.spot-plate {
+  font-size: 14px;
+  font-weight: 700;
+  color: #64748b;
+}
+
+/* Status coloring */
+.spot-available {
+  background: #eaf7f1;
+  border-color: #1f7a5f;
+}
+
+.spot-available .spot-icon,
+.spot-available .spot-status {
+  color: #1f7a5f;
+}
+
+.spot-occupied,
+.spot-reserved,
+.spot-maintenance {
+  background: #ffffff;
+  border-color: #1f2937;
+}

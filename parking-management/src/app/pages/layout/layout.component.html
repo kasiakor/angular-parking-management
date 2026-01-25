@@ -1,1 +1,86 @@
-<p>layout works!</p>
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary px-4">
+  <div class="container-fluid">
+    <!-- Brand -->
+    <a class="navbar-brand fw-bold" href="#"> ParkSmart </a>
+
+    <!-- Links -->
+    <div class="collapse navbar-collapse show">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0 gap-lg-3">
+        <li class="nav-item">
+          <a class="nav-link active fw-semibold" href="#">
+            <i class="fa-solid fa-gauge me-1"></i>
+            Dashboard
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link fw-semibold" href="#">
+            <i class="fa-regular fa-clock me-1"></i>
+            History
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link fw-semibold" href="#">
+            <i class="fa-regular fa-file-lines me-1"></i>
+            Reports
+          </a>
+        </li>
+      </ul>
+
+      <!-- Right section -->
+      <div class="d-flex align-items-center gap-3">
+        <!-- Role badge -->
+        <span class="badge rounded-pill bg-success px-3 py-2">
+          Entry Operator
+        </span>
+
+        <div class="dropdown">
+          <button
+            class="btn user-pill dropdown-toggle d-flex align-items-center gap-2"
+            type="button"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+          >
+            <span class="user-avatar">
+              <i class="fa-solid fa-user"></i>
+            </span>
+
+            <span class="fw-semibold text-white">
+              {{ userService.loggedUserData?.emailId }}
+            </span>
+          </button>
+
+          <ul class="dropdown-menu dropdown-menu-end user-dropdown">
+            <li>
+              <a class="dropdown-item" href="#">
+                <i class="fa-regular fa-user"></i>
+                <span>Profile</span>
+              </a>
+            </li>
+
+            <li>
+              <a class="dropdown-item" href="#">
+                <i class="fa-solid fa-gear"></i>
+                <span>Settings</span>
+              </a>
+            </li>
+
+            <li><hr class="dropdown-divider" /></li>
+
+            <li>
+              <a
+                class="dropdown-item text-danger"
+                (click)="onLogout()"
+                href="#"
+              >
+                <i class="fa-solid fa-right-from-bracket"></i>
+                <span>Logout</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<router-outlet></router-outlet>
