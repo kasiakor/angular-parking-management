@@ -22,7 +22,7 @@ export class LoginComponent {
         this.userService.setLoggedUser(response);
         // localStorage.setItem('userData', JSON.stringify(response));
         // this.userService.loggedUserData = response;
-        this.router.navigateByUrl('dashboard');
+        this.router.navigateByUrl('/dashboard');
       },
       error: (error) => {
         console.error('Login failed:', error);

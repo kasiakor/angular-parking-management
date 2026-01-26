@@ -171,3 +171,37 @@
   background: #ffffff;
   border-color: #1f2937;
 }
+
+/* Drpodowns Container */
+.location-bar {
+  background: #ffffff;
+  border: 1px solid #e6edf5;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 8px 20px rgba(15, 23, 42, 0.06);
+}
+
+/* Cell spacing */
+.location-cell {
+  padding: 10px;
+}
+
+/* Vertical dividers */
+.location-cell--middle {
+  border-left: 1px solid #e6edf5;
+  border-right: 1px solid #e6edf5;
+}
+
+/* Select styling */
+.location-select {
+  height: 46px;
+  border-radius: 10px;
+  font-weight: 600;
+  color: #0f172a;
+}
+
+/* Focus state */
+.location-select:focus {
+  border-color: #0d6efd;
+  box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.18);
+}

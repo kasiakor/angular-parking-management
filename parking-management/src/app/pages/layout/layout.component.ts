@@ -14,6 +14,6 @@ export class LayoutComponent {
 
   onLogout() {
     this.userService.logOff();
-    this.router.navigateByUrl('login');
+    this.router.navigateByUrl('/login');
   }
 }
