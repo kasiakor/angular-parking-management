@@ -205,3 +205,81 @@
   border-color: #0d6efd;
   box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.18);
 }
+
+/* parking-layout.component.css */
+
+/* legend dots */
+.dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+
+/* legend colors */
+.bg-available {
+  background: #198754;
+}
+.bg-occupied {
+  background: #dc3545;
+}
+.bg-reserved {
+  background: #f0ad0f;
+}
+.bg-maintenance {
+  background: #adb5bd;
+}
+
+/* card */
+.spot-card {
+  width: 180px;
+  height: 180px;
+  border-radius: 18px;
+  background: #fff;
+  border: 2px solid #111; /* default like your screenshot */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+/* icon */
+.spot-icon {
+  font-size: 22px;
+  line-height: 1;
+  margin-bottom: 4px;
+}
+
+.spot-id {
+  font-size: 42px;
+  font-weight: 800;
+  line-height: 1;
+  color: white;
+}
+
+.spot-status {
+  font-size: 16px;
+  font-weight: 700;
+  color: white;
+}
+
+/* status-driven colors (border + text) */
+.spot-card.available {
+  border-color: #198754;
+  background-color: #198754;
+}
+
+.spot-card.occupied {
+  border-color: #dc3545;
+  background-color: #dc3545;
+}
+
+.spot-card.reserved {
+  border-color: #f0ad0f;
+  background-color: #b78103;
+}
+
+.spot-card.maintenance {
+  border-color: #adb5bd;
+  background-color: #6c757d;
+}

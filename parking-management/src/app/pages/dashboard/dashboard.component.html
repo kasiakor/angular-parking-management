@@ -58,7 +58,11 @@
       <!-- Floor -->
       <div class="col-12 col-md-4">
         <div class="location-cell">
-          <select class="form-select location-select">
+          <select
+            class="form-select location-select"
+            [(ngModel)]="selectedFloorId"
+            (change)="onFloorChange()"
+          >
             <option selected disabled [ngValue]="null">Select Floor</option>
             @for (floor of floorData; track $index) {
               <option [ngValue]="floor.floorId">
@@ -171,17 +175,36 @@
           ><span class="legend-dot dot-maintenance"></span> Maintenance</span
         >
       </div>
-    </div>
+      <div class="d-flex gap-4 flex-wrap mt-3 small fw-semibold text-muted">
+        <div class="legend-note">* Note: Colors indicate spot status</div>
+      </div>
+      <div class="d-flex gap-4 flex-wrap mt-3 small fw-semibold text-muted">
+        <h3>Total spots: {{ totalParkingSpots }}</h3>
+      </div>
 
-    <div class="card-body">
-      <div class="row g-3">
-        <!-- A Row -->
-        <div class="col-6 col-md-4 col-lg-2">
+      <div class="card-body">
+        <div class="row g-3">
+          <!-- spots grid -->
+          <div class="d-flex flex-wrap gap-4 mt-4">
+            @for (spot of spots; track spot.id) {
+              <div class="spot-card" [ngClass]="spot.status">
+                <div class="spot-icon">
+                  <i class="bi bi-bookmark"></i>
+                </div>
+
+                <div class="spot-id">{{ spot.id }}</div>
+                <div class="spot-status text-capitalize">{{ spot.status }}</div>
+              </div>
+            }
+          </div>
+          <!-- A Row -->
+          <!-- <div class="col-6 col-md-4 col-lg-2">
           <div class="spot-tile spot-reserved">
             <i class="fa-regular fa-bookmark spot-icon"></i>
             <div class="spot-code">A1</div>
             <div class="spot-status">Reserved</div>
           </div>
+        </div> -->
         </div>
       </div>
     </div>
