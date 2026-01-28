@@ -36,4 +36,10 @@ export class SitesService {
         buildingId,
     );
   }
+  GetParkingByFloorId(floorId: number): Observable<IMasterResponse> {
+    return this.http.get<IMasterResponse>(
+      'https://api.freeprojectapi.com/api/SmartParking/GetAllParkingByFloor?id=' +
+        floorId,
+    );
+  }
 }

@@ -1,7 +1,21 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, OnInit } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  inject,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
+
 import { FormsModule } from '@angular/forms';
+import { Modal } from 'bootstrap';
 import { IBuilding, IFloor, ISite } from '../../interfaces/master.interface';
+import {
+  IParkingReservationRequest,
+  IParkingResponse,
+} from '../../interfaces/parking.interface';
+import { ParkingService } from '../../services/parking.service';
 import { SitesService } from '../../services/sites.service';
 
 // parking-layout
@@ -17,17 +31,47 @@ interface Spot {
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css',
 })
-export class DashboardComponent implements OnInit {
+export class DashboardComponent implements OnInit, AfterViewInit {
   sitesService = inject(SitesService);
+  parkingService = inject(ParkingService);
 
   spots: Spot[] = [];
   siteData: ISite[] = [];
   buildingData: IBuilding[] = [];
   floorData: IFloor[] = [];
+  parkingData: IParkingResponse[] = [];
+  floorId: number | null = null;
   selectedSiteId: number | null = null;
   selectedBuildingId: number | null = null;
   selectedFloorId: number | null = null;
   totalParkingSpots: number = 0;
+
+  // form fields
+  custName = '';
+  custMobileNo = '';
+  vehicleNo = '';
+  amount: number | null = null;
+
+  parkId: number = 0;
+  parkSpotNo!: number;
+  parkDate!: string;
+
+  selectedSpotId: string | null = null;
+  selectedSpotStatus: SpotStatus | null = null;
+
+  @ViewChild('bookSpotModal')
+  modalEl!: ElementRef<HTMLElement>;
+
+  private modal!: Modal;
+
+  ngAfterViewInit() {
+    this.modal = new Modal(this.modalEl.nativeElement);
+  }
+
+  openBookSpotModal(spotId: string) {
+    this.selectedSpotId = spotId;
+    this.modal.show();
+  }
 
   ngOnInit(): void {
     this.sitesService.getSitesByClientId().subscribe({
@@ -41,24 +85,24 @@ export class DashboardComponent implements OnInit {
     });
   }
 
-  generateRandomSpots(total: number) {
-    const statuses: SpotStatus[] = [
-      'available',
-      'occupied',
-      'reserved',
-      'maintenance',
-    ];
+  // generateRandomSpots(total: number) {
+  //   const statuses: SpotStatus[] = [
+  //     'available',
+  //     'occupied',
+  //     'reserved',
+  //     'maintenance',
+  //   ];
 
-    this.spots = [];
+  //   this.spots = [];
 
-    for (let i = 1; i <= total; i++) {
-      this.spots.push({
-        id: `A${i}`,
-        status: statuses[Math.floor(Math.random() * statuses.length)],
-      });
-    }
-    console.log('Generated spots:', this.spots);
-  }
+  //   for (let i = 1; i <= total; i++) {
+  //     this.spots.push({
+  //       id: `A${i}`,
+  //       status: statuses[Math.floor(Math.random() * statuses.length)],
+  //     });
+  //   }
+  //   console.log('Generated spots:', this.spots);
+  // }
 
   onSiteChange(siteId: number | null): void {
     const selectedSite = this.siteData.find((site) => site.siteId === siteId);
@@ -88,6 +132,7 @@ export class DashboardComponent implements OnInit {
     this.sitesService.GetFloorsByBuildingId(buildingId!).subscribe({
       next: (response) => {
         this.floorData = response.data;
+        this.floorId = this.floorData[0]?.floorId || null;
         console.log(
           'Floors data for building ID',
           buildingId,
@@ -113,6 +158,102 @@ export class DashboardComponent implements OnInit {
 
     this.totalParkingSpots = floor?.totalParkingSpots ?? 0;
 
-    this.generateRandomSpots(this.totalParkingSpots);
+    this.sitesService.GetParkingByFloorId(this.floorId!).subscribe({
+      next: (response) => {
+        console.log('Parking data for floor ID', this.floorId, ':', response);
+        this.parkingData = response.data;
+        this.spots = response.data.map((spot: any) => ({
+          id: spot.parkingNo,
+          status: spot.status as SpotStatus,
+        }));
+      },
+      error: (error) => {
+        console.error(
+          'Error loading parking data for floor ID',
+          this.floorId,
+          ':',
+          error,
+        );
+      },
+    });
+  }
+
+  onReservationSuccess() {
+    if (this.selectedSpotId == null) return;
+
+    const spot = this.spots.find((s) => s.id === this.selectedSpotId);
+    if (spot) {
+      spot.status = 'reserved'; // 🔥 update UI state
+    }
+
+    this.modal.hide();
+    this.selectedSpotId = null;
+  }
+
+  submitReservation() {
+    const payload: IParkingReservationRequest = {
+      parkId: this.parkId,
+      floorId: this.floorId!,
+      custName: this.custName,
+      custMobileNo: this.custMobileNo,
+      vehicleNo: this.vehicleNo,
+      parkDate: new Date().toISOString().split('T')[0],
+      parkSpotNo: Number(this.selectedSpotId?.replace('A', '')),
+      inTime: new Date().toISOString(),
+      outTime: '', // empty initially
+      amount: this.amount ?? 0,
+      extraCharge: 0,
+      parkingNo: this.selectedSpotId!,
+    };
+
+    console.log(payload);
+
+    this.parkingService.parkingReservation(payload).subscribe({
+      next: (response) => {
+        console.log('Reservation successful:', response);
+        this.onReservationSuccess();
+      },
+      error: (error) => {
+        console.error('Error making reservation:', error);
+      },
+    });
+  }
+
+  // claculation logic
+  get totalSpots(): number {
+    return this.spots.length;
+  }
+
+  get availableCount(): number {
+    return this.spots.filter((s) => s.status === 'available').length;
+  }
+
+  get occupiedCount(): number {
+    return this.spots.filter((s) => s.status === 'occupied').length;
+  }
+
+  get reservedCount(): number {
+    return this.spots.filter((s) => s.status === 'reserved').length;
+  }
+
+  get maintenanceCount(): number {
+    return this.spots.filter((s) => s.status === 'maintenance').length;
+  }
+
+  // "Taken" = occupied + reserved
+  get takenCount(): number {
+    return this.occupiedCount + this.reservedCount;
+  }
+
+  // Capacity excludes maintenance
+  get usableCapacity(): number {
+    return this.totalSpots - this.maintenanceCount;
+  }
+
+  // % = taken / usable * 100
+  get occupancyRate(): number {
+    const cap = this.usableCapacity;
+    if (cap <= 0) return 0;
+    return Math.round((this.takenCount / cap) * 100);
   }
 }

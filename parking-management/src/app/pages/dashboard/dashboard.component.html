@@ -85,7 +85,7 @@
         >
           <div>
             <div class="text-muted fw-semibold small">Total Spots</div>
-            <div class="summary-value">50</div>
+            <div class="summary-value">{{ totalParkingSpots }}</div>
           </div>
           <div class="summary-icon bg-primary"></div>
         </div>
@@ -100,7 +100,7 @@
         >
           <div>
             <div class="text-muted fw-semibold small">Available</div>
-            <div class="summary-value text-success">23</div>
+            <div class="summary-value text-success">{{ availableCount }}</div>
           </div>
           <div class="summary-icon bg-success"></div>
         </div>
@@ -115,7 +115,7 @@
         >
           <div>
             <div class="text-muted fw-semibold small">Occupied</div>
-            <div class="summary-value text-danger">22</div>
+            <div class="summary-value text-danger">{{ occupiedCount }}</div>
           </div>
           <div class="summary-icon bg-danger"></div>
         </div>
@@ -130,7 +130,7 @@
         >
           <div>
             <div class="text-muted fw-semibold small">Occupancy Rate</div>
-            <div class="summary-value text-primary">44%</div>
+            <div class="summary-value text-primary">{{ occupancyRate }}%</div>
           </div>
           <div class="summary-icon bg-info"></div>
         </div>
@@ -187,7 +187,13 @@
           <!-- spots grid -->
           <div class="d-flex flex-wrap gap-4 mt-4">
             @for (spot of spots; track spot.id) {
-              <div class="spot-card" [ngClass]="spot.status">
+              <div
+                class="spot-card"
+                [ngClass]="spot.status"
+                (click)="
+                  spot.status === 'available' && openBookSpotModal(spot.id)
+                "
+              >
                 <div class="spot-icon">
                   <i class="bi bi-bookmark"></i>
                 </div>
@@ -197,14 +203,144 @@
               </div>
             }
           </div>
-          <!-- A Row -->
-          <!-- <div class="col-6 col-md-4 col-lg-2">
-          <div class="spot-tile spot-reserved">
-            <i class="fa-regular fa-bookmark spot-icon"></i>
-            <div class="spot-code">A1</div>
-            <div class="spot-status">Reserved</div>
+          <!-- Book Parking Spot Modal -->
+          <div
+            class="modal fade"
+            id="bookSpotModal"
+            #bookSpotModal
+            tabindex="-1"
+            aria-labelledby="bookSpotModalLabel"
+            aria-hidden="true"
+          >
+            <div class="modal-dialog modal-dialog-centered modal-lg">
+              <div class="modal-content book-modal">
+                <!-- Header -->
+                <div class="modal-header book-modal__header">
+                  <div class="d-flex align-items-center gap-2">
+                    <!-- icon -->
+                    <span class="book-modal__icon">
+                      <i class="fa-solid fa-car"></i>
+                    </span>
+
+                    <h5
+                      class="modal-title fw-semibold mb-0"
+                      id="bookSpotModalLabel"
+                    >
+                      Book Parking Spot
+                    </h5>
+                  </div>
+
+                  <button
+                    type="button"
+                    class="btn-close btn-close-white"
+                    data-bs-dismiss="modal"
+                    aria-label="Close"
+                  ></button>
+                </div>
+
+                <!-- Body -->
+                <div class="modal-body book-modal__body">
+                  <form class="row g-3">
+                    <!-- Park Spot No -->
+                    <div class="col-12">
+                      <label class="form-label">Park Spot No</label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        [(ngModel)]="selectedSpotId"
+                        name="selectedSpotId"
+                        readonly
+                      />
+                    </div>
+
+                    <!-- Vehicle Number -->
+                    <div class="col-12">
+                      <label class="form-label">Vehicle Number</label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        placeholder="Enter vehicle number"
+                        [(ngModel)]="vehicleNo"
+                        name="vehicleNo"
+                      />
+                    </div>
+
+                    <!-- Amount -->
+                    <div class="col-12">
+                      <label class="form-label">Amount</label>
+                      <input
+                        type="number"
+                        class="form-control"
+                        placeholder="Enter Amount"
+                        [(ngModel)]="amount"
+                        name="amount"
+                      />
+                    </div>
+
+                    <!-- Customer Name -->
+                    <div class="col-12">
+                      <label class="form-label">Customer Name</label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        placeholder="Customer name"
+                        [(ngModel)]="custName"
+                        name="custName"
+                      />
+                    </div>
+
+                    <!-- Contact Number -->
+                    <div class="col-12">
+                      <label class="form-label">Contact Number</label>
+                      <input
+                        type="tel"
+                        class="form-control"
+                        placeholder="Enter contact number"
+                        [(ngModel)]="custMobileNo"
+                        name="custMobileNo"
+                      />
+                    </div>
+
+                    <!-- Entry Time -->
+                    <div class="col-12">
+                      <label class="form-label">Entry Time</label>
+                      <div class="input-group">
+                        <input
+                          type="text"
+                          class="form-control"
+                          name="parkDate"
+                          readonly
+                        />
+                        <span class="input-group-text">
+                          <i class="fa-regular fa-calendar"></i>
+                        </span>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+
+                <!-- Footer -->
+                <div class="modal-footer book-modal__footer">
+                  <button
+                    type="button"
+                    class="btn btn-outline-secondary"
+                    data-bs-dismiss="modal"
+                  >
+                    Cancel
+                  </button>
+
+                  <button
+                    type="button"
+                    class="btn btn-primary px-4"
+                    (click)="submitReservation()"
+                  >
+                    <i class="fa-solid fa-circle-check me-2"></i>
+                    Confirm Booking
+                  </button>
+                </div>
+              </div>
+            </div>
           </div>
-        </div> -->
         </div>
       </div>
     </div>
