@@ -85,24 +85,24 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     });
   }
 
-  // generateRandomSpots(total: number) {
-  //   const statuses: SpotStatus[] = [
-  //     'available',
-  //     'occupied',
-  //     'reserved',
-  //     'maintenance',
-  //   ];
+  generateRandomSpots(total: number) {
+    const statuses: SpotStatus[] = [
+      'available',
+      'occupied',
+      'reserved',
+      'maintenance',
+    ];
 
-  //   this.spots = [];
+    this.spots = [];
 
-  //   for (let i = 1; i <= total; i++) {
-  //     this.spots.push({
-  //       id: `A${i}`,
-  //       status: statuses[Math.floor(Math.random() * statuses.length)],
-  //     });
-  //   }
-  //   console.log('Generated spots:', this.spots);
-  // }
+    for (let i = 1; i <= total; i++) {
+      this.spots.push({
+        id: `A${i}`,
+        status: statuses[Math.floor(Math.random() * statuses.length)],
+      });
+    }
+    console.log('Generated spots:', this.spots);
+  }
 
   onSiteChange(siteId: number | null): void {
     const selectedSite = this.siteData.find((site) => site.siteId === siteId);
@@ -152,20 +152,12 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   }
 
   onFloorChange(): void {
-    const floor = this.floorData.find(
-      (floor) => floor.floorId === this.selectedFloorId,
-    );
-
-    this.totalParkingSpots = floor?.totalParkingSpots ?? 0;
-
     this.sitesService.GetParkingByFloorId(this.floorId!).subscribe({
       next: (response) => {
         console.log('Parking data for floor ID', this.floorId, ':', response);
         this.parkingData = response.data;
-        this.spots = response.data.map((spot: any) => ({
-          id: spot.parkingNo,
-          status: spot.status as SpotStatus,
-        }));
+        this.totalParkingSpots = this.parkingData.length;
+        this.generateRandomSpots(this.totalParkingSpots);
       },
       error: (error) => {
         console.error(

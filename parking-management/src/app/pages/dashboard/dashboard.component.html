@@ -85,7 +85,7 @@
         >
           <div>
             <div class="text-muted fw-semibold small">Total Spots</div>
-            <div class="summary-value">{{ totalParkingSpots }}</div>
+            <div class="summary-value">{{ totalSpots }}</div>
           </div>
           <div class="summary-icon bg-primary"></div>
         </div>
@@ -179,7 +179,7 @@
         <div class="legend-note">* Note: Colors indicate spot status</div>
       </div>
       <div class="d-flex gap-4 flex-wrap mt-3 small fw-semibold text-muted">
-        <h3>Total spots: {{ totalParkingSpots }}</h3>
+        <h3>Total spots: {{ totalSpots }}</h3>
       </div>
 
       <div class="card-body">
@@ -195,7 +195,7 @@
                 "
               >
                 <div class="spot-icon">
-                  <i class="bi bi-bookmark"></i>
+                  <i class="fa-solid fa-bookmark" style="color: darkgray"></i>
                 </div>
 
                 <div class="spot-id">{{ spot.id }}</div>
