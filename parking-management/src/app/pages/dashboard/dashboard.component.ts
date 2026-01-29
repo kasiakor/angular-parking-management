@@ -62,16 +62,12 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   @ViewChild('bookSpotModal')
   modalEl!: ElementRef<HTMLElement>;
 
+  @ViewChild('releaseSpotModal')
+  releaseModalEl!: ElementRef<HTMLElement>;
+
+  releaseModal!: Modal;
+
   private modal!: Modal;
-
-  ngAfterViewInit() {
-    this.modal = new Modal(this.modalEl.nativeElement);
-  }
-
-  openBookSpotModal(spotId: string) {
-    this.selectedSpotId = spotId;
-    this.modal.show();
-  }
 
   ngOnInit(): void {
     this.sitesService.getSitesByClientId().subscribe({
@@ -83,6 +79,35 @@ export class DashboardComponent implements OnInit, AfterViewInit {
         console.error('Error loading sites data:', error);
       },
     });
+  }
+
+  ngAfterViewInit() {
+    this.modal = new Modal(this.modalEl.nativeElement);
+    this.releaseModal = new Modal(this.releaseModalEl.nativeElement);
+  }
+
+  openBookSpotModal(spotId: string) {
+    this.selectedSpotId = spotId;
+    this.modal.show();
+  }
+
+  openReleaseSpotModal(spotId: string) {
+    this.selectedSpotId = spotId;
+    this.releaseModal.show();
+  }
+
+  onSpotClick(spot: { id: string; status: string }) {
+    if (spot.status === 'available') {
+      this.openBookSpotModal(spot.id);
+      return;
+    }
+
+    if (spot.status === 'occupied') {
+      this.openReleaseSpotModal(spot.id);
+      return;
+    }
+
+    // optional: ignore other states
   }
 
   generateRandomSpots(total: number) {
@@ -183,6 +208,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   }
 
   submitReservation() {
+    alert('Submitting reservation...');
     const payload: IParkingReservationRequest = {
       parkId: this.parkId,
       floorId: this.floorId!,
