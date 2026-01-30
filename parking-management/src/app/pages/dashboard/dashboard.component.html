@@ -198,7 +198,6 @@
             #bookSpotModal
             tabindex="-1"
             aria-labelledby="bookSpotModalLabel"
-            aria-hidden="true"
           >
             <div class="modal-dialog modal-dialog-centered modal-lg">
               <div class="modal-content book-modal">
@@ -314,12 +313,7 @@
             </div>
           </div>
           <!-- Release Parking Spot Modal -->
-          <div
-            #releaseSpotModal
-            class="modal fade"
-            tabindex="-1"
-            aria-hidden="true"
-          >
+          <div #releaseSpotModal class="modal fade" tabindex="-1">
             <div class="modal-dialog modal-dialog-centered">
               <div class="modal-content">
                 <!-- Header -->
@@ -340,7 +334,12 @@
                 <!-- Body -->
                 <div class="modal-body">
                   <label class="form-label">Extra Amount</label>
-                  <input type="number" class="form-control" placeholder="0" />
+                  <input
+                    type="number"
+                    class="form-control"
+                    placeholder="0"
+                    [(ngModel)]="extraCharge"
+                  />
                 </div>
 
                 <!-- Footer -->
@@ -353,7 +352,11 @@
                     Cancel
                   </button>
 
-                  <button type="button" class="btn btn-success">
+                  <button
+                    type="button"
+                    class="btn btn-success"
+                    (click)="confirmRelease()"
+                  >
                     Confirm Release
                   </button>
                 </div>

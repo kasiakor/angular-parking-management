@@ -13,6 +13,7 @@ export class LayoutComponent {
   router = inject(Router);
 
   onLogout() {
+    alert('Logging out...');
     this.userService.logOff();
     this.router.navigateByUrl('/login');
   }

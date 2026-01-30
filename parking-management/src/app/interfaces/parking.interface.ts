@@ -36,3 +36,9 @@ export interface IParkingResponse {
   parkingNo: string;
   clientName: string;
 }
+
+export interface IReleaseSpace {
+  parkId: number;
+  outTime: string;
+  extraCharge: number;
+}

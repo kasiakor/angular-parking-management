@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import {
   IParkingReservationRequest,
   IParkingReservationResponse,
+  IReleaseSpace,
 } from '../interfaces/parking.interface';
 
 @Injectable({
@@ -19,5 +20,14 @@ export class ParkingService {
       'https://api.freeprojectapi.com/api/SmartParking/AddParking',
       obj,
     );
+  }
+
+    releasePrkingSpot(
+    obj: IReleaseSpace,
+  ): Observable<any> {
+    return this.http.post<any>(
+      'https://api.freeprojectapi.com/api/SmartParking/MarExit',
+      obj,
+    );  
   }
 }

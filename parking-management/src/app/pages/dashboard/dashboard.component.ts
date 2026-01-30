@@ -14,6 +14,7 @@ import { IBuilding, IFloor, ISite } from '../../interfaces/master.interface';
 import {
   IParkingReservationRequest,
   IParkingResponse,
+  IReleaseSpace,
 } from '../../interfaces/parking.interface';
 import { ParkingService } from '../../services/parking.service';
 import { SitesService } from '../../services/sites.service';
@@ -59,6 +60,8 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   selectedSpotId: string | null = null;
   selectedSpotStatus: SpotStatus | null = null;
 
+  extraCharge: number = 0;
+
   @ViewChild('bookSpotModal')
   modalEl!: ElementRef<HTMLElement>;
 
@@ -84,6 +87,14 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   ngAfterViewInit() {
     this.modal = new Modal(this.modalEl.nativeElement);
     this.releaseModal = new Modal(this.releaseModalEl.nativeElement);
+
+    this.releaseModalEl.nativeElement.addEventListener(
+      'hidden.bs.modal',
+      () => {
+        // move focus somewhere safe to remove warning
+        document.body.focus();
+      },
+    );
   }
 
   openBookSpotModal(spotId: string) {
@@ -93,6 +104,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
 
   openReleaseSpotModal(spotId: string) {
     this.selectedSpotId = spotId;
+    console.log('Opening release modal for spot ID:', this.selectedSpotId);
     this.releaseModal.show();
   }
 
@@ -235,6 +247,34 @@ export class DashboardComponent implements OnInit, AfterViewInit {
         console.error('Error making reservation:', error);
       },
     });
+  }
+
+  confirmRelease() {
+    alert('Releasing spot...');
+    if (this.selectedSpotId == null) return;
+    console.log('Releasing spot number:', this.selectedSpotId);
+
+    const payload: IReleaseSpace = {
+      parkId: Number(this.selectedSpotId?.replace('A', '')),
+      outTime: new Date().toISOString(),
+      extraCharge: this.extraCharge,
+    };
+
+    this.parkingService.releasePrkingSpot(payload).subscribe({
+      next: (response) => {
+        console.log('Release successful:', response);
+      },
+      error: (error) => {
+        console.error('Error releasing spot:', error);
+      },
+    });
+    console.log(payload); // send to API later 😊🌷
+
+    const spot = this.spots.find((s) => s.id === this.selectedSpotId);
+    if (spot) {
+      spot.status = 'available'; // 🔥 update UI state
+    }
+    this.releaseModal.hide();
   }
 
   // claculation logic
